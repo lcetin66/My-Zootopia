@@ -16,10 +16,12 @@ for info in animals_data:
     location = locations[0]
     type_value = characteristics.get("type")
 
-    output += f"Name: {name}\n"
-    output += f"Diet: {diet}\n"
-    output += f"Location: {location}\n"
-    output += f"{f'Type: {type_value}\n' if type_value else ''}\n"
+    output += "<li class='cards__item'>"
+    output += f"Name: {name}</br>"
+    output += f"Diet: {diet}</br>"
+    output += f"Location: {location}</br>"
+    output += f"{f'Type: {type_value}' if type_value else ''}"
+    output += f"</li>"
 
 with open("animals_template.html", "r", encoding="utf-8") as f:
     html = f.read()
