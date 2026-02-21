@@ -5,52 +5,42 @@ def load_data(file_path):
   with open(file_path, "r") as handle:
     return json.load(handle)
 
-def read_and_convert_data(data):
+def serialize_animal(animal_obj):
     """Read JSON and convert it to HTML list items"""
-    output = ""
+    name = animal_obj.get("name", "Unknown")
+    characteristics = animal_obj.get("characteristics", {})
+    diet = characteristics.get("diet", "Unknown")
+    animal_type = characteristics.get("type")
+    locations = animal_obj.get("locations", [])
+    location = locations[0] if locations else "Unknown"
 
-    for animal_data in data:
-        name = animal_data.get("name", "Unknown")
+    html = "<li class='cards__item'>"
+    html += f"<div class='card__title'>{name}</div>"
+    html += "<p class='cards__text'>"
+    html += f"<strong>Diet:</strong> {diet}<br>"
+    html += f"<strong>Location:</strong> {location}<br>"
+    if animal_type:
+        html += f"<strong>Type:</strong> {animal_type}"
+    html += "</p></li>"
 
-        characteristics = animal_data.get("characteristics", {})
-        diet = characteristics.get("diet", "Unknown")
-        animal_type = characteristics.get("type")
-
-        locations = animal_data.get("locations", [])
-        location = locations[0] if locations else "Unknown"
-
-        output += "<li class='cards__item'>"
-        output += f"<div class='card__title'>{name}</div>"
-        output += "<p class='cards__text'>"
-        output += f"<strong>Diet:</strong> {diet}<br>"
-        output += f"<strong>Location:</strong> {location}<br>"
-
-        if animal_type:
-            output += f"<strong>Type:</strong> {animal_type}"
-
-        output += "</p>"
-        output += "</li>"
-
-    return output
-
-def write_data(output, file_path):
-    """ Writes HTML content to file """
-    with open(file_path, "r", encoding="utf-8") as file:
-        html_content = file.read()
-
-    html_content = html_content.replace('__REPLACE_ANIMALS_INFO__', output)
-
-    with open('animals.html', "w", encoding="utf-8") as file:
-        file.write(html_content)
+    return html
 
 def main():
     """ Main function """
-    data = load_data('animals_data.json')
-    output = read_and_convert_data(data)
-    write_data(output, 'animals_template.html')
+    data = load_data("animals_data.json")
+
+    output = ''
+    for animal_obj in data:
+        output += serialize_animal(animal_obj)
+
+    with open('animals_template.html', 'r', encoding='utf-8') as data_file:
+        html_content = data_file.read()
+
+    html_content = html_content.replace('__REPLACE_ANIMALS_INFO__', output)
+
+    with open('animals.html', 'w', encoding='utf-8') as data_file:
+        data_file.write(html_content)
 
 
 if __name__ == '__main__':
     main()
-
-
