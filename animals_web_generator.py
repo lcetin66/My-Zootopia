@@ -10,18 +10,21 @@ def serialize_animal(animal_obj):
     name = animal_obj.get("name", "Unknown")
     characteristics = animal_obj.get("characteristics", {})
     diet = characteristics.get("diet", "Unknown")
+    skin_type = characteristics.get("skin_type", "Unknown")
     animal_type = characteristics.get("type")
     locations = animal_obj.get("locations", [])
     location = locations[0] if locations else "Unknown"
 
     html = "<li class='cards__item'>"
     html += f"<div class='card__title'>{name}</div>"
-    html += "<p class='cards__text'>"
-    html += f"<strong>Diet:</strong> {diet}<br>"
-    html += f"<strong>Location:</strong> {location}<br>"
+    html += "<div class='cards__text'>"
+    html += f"<ul>"
+    html += f"<li><strong>Diet:</strong> {diet}</li>"
+    html += f"<li><strong>Skin type:</strong> {skin_type}</li>"
+    html += f"<li><strong>Location:</strong> {location}</li>"
     if animal_type:
-        html += f"<strong>Type:</strong> {animal_type}"
-    html += "</p></li>"
+        html += f"<li><strong>Type:</strong> {animal_type}</li>"
+    html += "</ul></div></li>"
 
     return html
 
